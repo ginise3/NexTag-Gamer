@@ -12,4 +12,5 @@ export {
   SUFFIX_POOL,
   NUMBER_POOL,
   PARAMETER_WEIGHTS,
+  WORD_SEPARATORS,
 } from "./generationModifiers";

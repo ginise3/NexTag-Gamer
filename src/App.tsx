@@ -1,10 +1,11 @@
 import "./App.css";
+import { QuickNickname } from "./screens/QuickNickname";
 
 /**
- * Временная заглушка UI на время реализации MVP по этапам (Task.md §43).
- * На данный момент готова каноническая модель параметров, SemanticProfile
- * и normalizer пользовательского ввода (`src/domain`) — экраны Quick /
- * Custom / Invisible Nickname ещё не реализованы.
+ * Реализовано по этапам Task.md §43: каноническая модель параметров,
+ * SemanticProfile, normalizer, генератор с несколькими механизмами и
+ * Validator (`src/domain`), режим Quick Nickname. Home с выбором режима,
+ * Custom Nickname, Invisible Nickname и локализация — следующие этапы.
  */
 function App() {
   return (
@@ -19,11 +20,7 @@ function App() {
     >
       <h1>NexTag Gamer</h1>
       <p>Gamer Nickname Generator — MVP в разработке.</p>
-      <p>
-        Реализовано: каноническая модель параметров, семантическая база и
-        нормализация пользовательского ввода (см. <code>src/domain</code>).
-        Экраны Quick / Custom / Invisible Nickname — следующий этап.
-      </p>
+      <QuickNickname />
     </main>
   );
 }
