@@ -1,0 +1,30 @@
+/** NICK STYLE — SEMANTIC_GAME_PARAMETER_BASE.md §9. */
+import type { ParameterOption } from "../types";
+
+export const NICK_STYLES: readonly ParameterOption[] = [
+  { id: "aggressive", label: { en: "Aggressive", ru: "Агрессивный" } },
+  { id: "dark", label: { en: "Dark", ru: "Тёмный" } },
+  { id: "mysterious", label: { en: "Mysterious", ru: "Загадочный" } },
+  { id: "funny", label: { en: "Funny", ru: "Смешной" } },
+  { id: "epic", label: { en: "Epic", ru: "Эпический" } },
+  { id: "heroic", label: { en: "Heroic", ru: "Героический" } },
+  { id: "professional", label: { en: "Professional", ru: "Профессиональный" } },
+  { id: "minimal", label: { en: "Minimal", ru: "Минималистичный" } },
+  { id: "clean", label: { en: "Clean", ru: "Чистый" } },
+  { id: "elite", label: { en: "Elite", ru: "Элитный" } },
+  { id: "scary", label: { en: "Scary", ru: "Страшный" } },
+  { id: "futuristic", label: { en: "Futuristic", ru: "Футуристический" } },
+  { id: "cyber", label: { en: "Cyber", ru: "Кибер" } },
+  { id: "fantasy", label: { en: "Fantasy", ru: "Фэнтези" } },
+  { id: "mythical", label: { en: "Mythical", ru: "Мифический" } },
+  { id: "military", label: { en: "Military", ru: "Военный" } },
+  { id: "cold", label: { en: "Cold", ru: "Холодный" } },
+  { id: "savage", label: { en: "Savage", ru: "Жестокий" } },
+  { id: "chaotic", label: { en: "Chaotic", ru: "Хаотичный" } },
+  { id: "cute", label: { en: "Cute", ru: "Милый" } },
+  { id: "weird", label: { en: "Weird", ru: "Странный" } },
+  { id: "stylish", label: { en: "Stylish", ru: "Стильный" } },
+  { id: "stealthy", label: { en: "Stealthy", ru: "Скрытный" } },
+  { id: "powerful", label: { en: "Powerful", ru: "Мощный" } },
+  { id: "intelligent", label: { en: "Intelligent", ru: "Интеллектуальный" } },
+] as const;
