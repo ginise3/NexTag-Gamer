@@ -12,6 +12,21 @@ dist
 dist-ssr
 *.local
 
+# Secrets / environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+
+# Python (on the off chance a script/venv shows up here)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
