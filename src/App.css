@@ -425,3 +425,55 @@ button:disabled {
   height: 26px;
   border-style: dashed;
 }
+
+/* ---------- Mobile (desktop-first "quick fix": stack sidebar above
+   content instead of a fixed-width side column) ---------- */
+
+@media (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-height: none;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .main-content {
+    width: 100%;
+    max-width: none;
+    padding: 24px 16px;
+  }
+
+  .main-content h1,
+  .app-tagline {
+    text-align: center;
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    padding: 12px;
+  }
+
+  .main-content {
+    padding: 20px 12px;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mode-tab {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+}
