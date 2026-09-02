@@ -1,5 +1,7 @@
 import type { GeneratedInvisibleNickname } from "../../domain/invisible";
 import type { Translations } from "../../i18n/translations";
+import { CopyButton } from "./CopyButton";
+import { EmptyStateCard } from "./EmptyStateCard";
 
 interface InvisibleResultsListProps {
   results: readonly GeneratedInvisibleNickname[];
@@ -23,24 +25,41 @@ export function InvisibleResultsList({ results, copiedValue, onCopy, onGenerate,
         {results.length === 0 ? t.common.generate : t.common.generateMore}
       </button>
 
+      {results.length === 0 && (
+        <EmptyStateCard
+          title={t.invisible.emptyStateTitle}
+          description={t.invisible.hint}
+          blankExampleCount={3}
+          blankCaption={t.invisible.blankExampleCaption}
+        />
+      )}
+
       {results.length > 0 && (
-        <ul className="results-list">
+        <div className="results-grid">
           {results.map((nickname) => (
-            <li key={nickname.value} className="result-row">
-              <code className="result-code-box">{nickname.value}</code>
-              <div className="result-meta">
-                <div>{t.invisible.resultCaption(nickname.value.length)}</div>
-                <div>
-                  {t.invisible.charactersUsedLabel}:{" "}
-                  {nickname.characters.map((c) => `${c.name} (${c.codepoint})`).join(" + ")}
-                </div>
+            <div key={nickname.value} className="result-card">
+              <code className="result-card__value result-code-box">{nickname.value}</code>
+              <div className="result-card__badges">
+                <span className="badge">{t.invisible.types[nickname.type]}</span>
               </div>
-              <button type="button" onClick={() => onCopy(nickname.value)}>
-                {copiedValue === nickname.value ? t.common.copied : t.common.copy}
-              </button>
-            </li>
+              <p className="result-meta">
+                {t.invisible.resultCaption(nickname.value.length)}
+                <br />
+                {t.invisible.charactersUsedLabel}:{" "}
+                {nickname.characters.map((c) => `${c.name} (${c.codepoint})`).join(" + ")}
+              </p>
+              <div className="result-card__footer">
+                <CopyButton
+                  value={nickname.value}
+                  copied={copiedValue === nickname.value}
+                  onCopy={onCopy}
+                  copyLabel={t.common.copy}
+                  copiedLabel={t.common.copied}
+                />
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </>
   );

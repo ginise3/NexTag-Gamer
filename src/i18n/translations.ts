@@ -12,6 +12,21 @@
  */
 export type Lang = "en" | "ru";
 
+/** Короткие подписи-бейджи для механизма построения ника (Task.md §16) —
+ * чисто презентационные ярлыки на карточке результата, не влияют на логику. */
+export type MechanismLabels = {
+  word_combination: string;
+  word_shortening: string;
+  phonetic_modification: string;
+  prefix: string;
+  suffix: string;
+  letter_replacement: string;
+  semantic_combination: string;
+  custom_keyword_mutation: string;
+  compact_form: string;
+  multi_word_form: string;
+};
+
 export interface Translations {
   appTagline: string;
   language: string;
@@ -31,7 +46,11 @@ export interface Translations {
     addNumbers: string;
     lengthLabel: string;
     lengthOptions: { any: string; short: string; medium: string; long: string };
+    leetBadge: string;
+    emptyStateTitle: string;
+    examplesLabel: string;
   };
+  mechanisms: MechanismLabels;
   quick: {
     heading: string;
     hint: string;
@@ -60,6 +79,8 @@ export interface Translations {
     compatibilityNotice: string;
     charactersUsedLabel: string;
     resultCaption: (charCount: number) => string;
+    emptyStateTitle: string;
+    blankExampleCaption: string;
   };
   additionalWordsIssues: {
     cyrillic: (raw: string) => string;
@@ -99,6 +120,21 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       addNumbers: "Add numbers",
       lengthLabel: "Length",
       lengthOptions: { any: "Any length", short: "Short", medium: "Medium", long: "Long" },
+      leetBadge: "Leet",
+      emptyStateTitle: "No nicknames yet",
+      examplesLabel: "Examples",
+    },
+    mechanisms: {
+      word_combination: "Combo",
+      word_shortening: "Short",
+      phonetic_modification: "Phonetic",
+      prefix: "Prefix",
+      suffix: "Suffix",
+      letter_replacement: "Letters",
+      semantic_combination: "Semantic",
+      custom_keyword_mutation: "Mutation",
+      compact_form: "Compact",
+      multi_word_form: "Multi-word",
     },
     quick: {
       heading: "Quick Nickname",
@@ -132,6 +168,8 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       compatibilityNotice: "Compatibility depends on the game or platform.",
       charactersUsedLabel: "Characters used",
       resultCaption: (charCount) => `${charCount} character${charCount === 1 ? "" : "s"} — looks blank above`,
+      emptyStateTitle: "Nothing generated yet",
+      blankExampleCaption: "These will look empty too — that's the point.",
     },
     additionalWordsIssues: {
       cyrillic: (raw) => `"${raw}" — please enter custom words in English only.`,
@@ -170,6 +208,21 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       addNumbers: "Добавлять числа",
       lengthLabel: "Длина",
       lengthOptions: { any: "Любая длина", short: "Короткая", medium: "Средняя", long: "Длинная" },
+      leetBadge: "Leet",
+      emptyStateTitle: "Пока нет ни одного ника",
+      examplesLabel: "Примеры",
+    },
+    mechanisms: {
+      word_combination: "Комбо",
+      word_shortening: "Кратко",
+      phonetic_modification: "Фонетика",
+      prefix: "Префикс",
+      suffix: "Суффикс",
+      letter_replacement: "Замена букв",
+      semantic_combination: "Семантика",
+      custom_keyword_mutation: "Мутация",
+      compact_form: "Компакт",
+      multi_word_form: "Из двух слов",
     },
     quick: {
       heading: "Быстрый ник",
@@ -203,6 +256,8 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       compatibilityNotice: "Совместимость зависит от игры или платформы.",
       charactersUsedLabel: "Использованные символы",
       resultCaption: (charCount) => `${charCount} симв. — сверху выглядит пустым`,
+      emptyStateTitle: "Пока ничего не сгенерировано",
+      blankExampleCaption: "Результат тоже будет выглядеть пустым — в этом весь смысл.",
     },
     additionalWordsIssues: {
       cyrillic: (raw) => `«${raw}» — дополнительные слова нужно вводить только на английском языке.`,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   trackCustomWordsUsed,
   trackGenerationCompleted,
@@ -8,11 +8,13 @@ import {
   trackRegenerateClicked,
 } from "../../analytics";
 import { createEmptySemanticProfile, type LengthPreference } from "../../domain/types";
+import type { Lang, Translations } from "../../i18n/translations";
+import { computeBatchBadges } from "./batchBadges";
 import { useClassicOptions } from "./useClassicOptions";
 import { useNicknameSession } from "./useNicknameSession";
 
 /** Состояние + генерация для режима Quick Nickname (Task.md §5). */
-export function useQuickNickname() {
+export function useQuickNickname(t: Translations, lang: Lang) {
   const [nickStyle, setNickStyleState] = useState("");
   const [length, setLength] = useState<LengthPreference | "">("");
   const [useNumbers, setUseNumbers] = useState(false);
@@ -24,6 +26,11 @@ export function useQuickNickname() {
 
   const classic = useClassicOptions();
   const session = useNicknameSession();
+
+  const badges = useMemo(
+    () => computeBatchBadges(nickStyle, classic.state, t, lang),
+    [nickStyle, classic.state, t, lang],
+  );
 
   function handleGenerate() {
     const isRegenerate = session.results.length > 0;
@@ -61,6 +68,7 @@ export function useQuickNickname() {
     useNumbers,
     setUseNumbers,
     classic,
+    badges,
     handleGenerate,
     results: session.results,
     copiedValue: session.copiedValue,

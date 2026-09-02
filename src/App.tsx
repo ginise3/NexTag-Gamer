@@ -27,8 +27,8 @@ function AppShell() {
   const { lang, t, setLang } = useLanguage();
   const [mode, setMode] = useState<Mode>("quick");
 
-  const quick = useQuickNickname();
-  const custom = useCustomNickname();
+  const quick = useQuickNickname(t, lang);
+  const custom = useCustomNickname(t, lang);
   const invisible = useInvisibleNickname();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps -- намеренно один раз за сессию (Task.md §32 app_open)
@@ -85,6 +85,8 @@ function AppShell() {
             onCopy={quick.copy}
             onGenerate={quick.handleGenerate}
             t={t}
+            emptyHint={t.quick.hint}
+            batchBadges={quick.badges}
           />
         )}
         {mode === "custom" && (
@@ -95,6 +97,7 @@ function AppShell() {
             onGenerate={custom.handleGenerate}
             t={t}
             emptyHint={t.custom.emptyHint}
+            batchBadges={custom.badges}
           />
         )}
         {mode === "invisible" && (

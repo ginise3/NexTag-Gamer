@@ -9,11 +9,13 @@ import {
 } from "../../analytics";
 import { normalizeCustomWordsInput } from "../../domain/normalizer";
 import { createEmptySemanticProfile, type LengthPreference } from "../../domain/types";
+import type { Lang, Translations } from "../../i18n/translations";
+import { computeBatchBadges } from "./batchBadges";
 import { useClassicOptions } from "./useClassicOptions";
 import { useNicknameSession } from "./useNicknameSession";
 
 /** Состояние + генерация для режима Custom Nickname (Task.md §6, §39). */
-export function useCustomNickname() {
+export function useCustomNickname(t: Translations, lang: Lang) {
   const [genres, setGenres] = useState<Set<string>>(new Set());
   const [setting, setSettingState] = useState("");
   const [role, setRoleState] = useState("");
@@ -26,6 +28,11 @@ export function useCustomNickname() {
   const additionalWords = useMemo(() => normalizeCustomWordsInput(additionalWordsRaw), [additionalWordsRaw]);
   const classic = useClassicOptions();
   const session = useNicknameSession();
+
+  const badges = useMemo(
+    () => computeBatchBadges(nickStyle, classic.state, t, lang),
+    [nickStyle, classic.state, t, lang],
+  );
 
   function toggleGenre(id: string) {
     setGenres((prev) => {
@@ -111,6 +118,7 @@ export function useCustomNickname() {
     useNumbers,
     setUseNumbers,
     classic,
+    badges,
     handleGenerate,
     results: session.results,
     copiedValue: session.copiedValue,
