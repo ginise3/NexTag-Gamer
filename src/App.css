@@ -39,6 +39,40 @@
   max-width: 720px;
 }
 
+/* Гамбургер и оверлей существуют в DOM на всех разрешениях, но видимы и
+   интерактивны только на мобильных (см. медиа-запрос ниже) — благодаря
+   position: fixed они в любом случае не участвуют в flex-раскладке
+   .app-shell на десктопе. */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 60;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  font-size: 18px;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
 /* Компактный тонкий скроллбар для длинных списков внутри сайдбара
    (например, чекбоксов Genre) — та же логика, что у .sidebar. */
 .scroll-list {
@@ -426,27 +460,45 @@ button:disabled {
   border-style: dashed;
 }
 
-/* ---------- Mobile (desktop-first "quick fix": stack sidebar above
-   content instead of a fixed-width side column) ---------- */
+/* ---------- Mobile: sidebar becomes an off-canvas drawer opened by the
+   hamburger button, overlaying content instead of pushing it (same idea
+   as Streamlit's built-in collapsible sidebar). ---------- */
 
 @media (max-width: 768px) {
-  .app-shell {
-    flex-direction: column;
+  .hamburger-btn {
+    display: inline-flex;
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .sidebar-overlay--visible {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .sidebar {
-    width: 100%;
+    position: fixed;
+    inset: 0 auto 0 0;
+    height: 100dvh;
+    width: min(300px, 85vw);
     max-height: none;
-    position: relative;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    border-right: 1px solid var(--border);
+  }
+
+  .sidebar--open {
+    transform: translateX(0);
   }
 
   .main-content {
     width: 100%;
     max-width: none;
     padding: 24px 16px;
+    padding-top: 64px; /* оставляет место для фиксированной кнопки-гамбургера */
   }
 
   .main-content h1,

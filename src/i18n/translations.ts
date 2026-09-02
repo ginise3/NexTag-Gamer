@@ -30,6 +30,8 @@ export type MechanismLabels = {
 export interface Translations {
   appTagline: string;
   language: string;
+  openMenu: string;
+  closeMenu: string;
   modes: {
     quick: string;
     custom: string;
@@ -104,6 +106,8 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
   en: {
     appTagline: "Gamer Nickname Generator",
     language: "Language",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
     modes: {
       quick: "Quick Nickname",
       custom: "Custom Nickname",
@@ -192,6 +196,8 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
   ru: {
     appTagline: "Генератор игровых ников",
     language: "Язык",
+    openMenu: "Открыть меню",
+    closeMenu: "Закрыть меню",
     modes: {
       quick: "Быстрый ник",
       custom: "Персональный ник",

@@ -26,6 +26,7 @@ type Mode = "quick" | "custom" | "invisible";
 function AppShell() {
   const { lang, t, setLang } = useLanguage();
   const [mode, setMode] = useState<Mode>("quick");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const quick = useQuickNickname(t, lang);
   const custom = useCustomNickname(t, lang);
@@ -36,14 +37,55 @@ function AppShell() {
     trackAppOpen();
   }, []);
 
+  // Закрытие оверлея по Escape — на мобильных сайдбар открывается поверх
+  // контента (не сдвигая его), как гамбургер-меню Streamlit.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen]);
+
+  // Блокируем скролл фона, пока открыта мобильная панель — иначе страница
+  // под затемнением всё равно прокручивается вместе с меню.
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   function handleLanguageChange(next: Lang) {
     setLang(next);
     trackLanguageSelected(next);
   }
 
+  function selectMode(next: Mode) {
+    setMode(next);
+    setMobileMenuOpen(false); // на мобильных выбор режима — как переход по нав-меню, закрываем панель
+  }
+
   return (
     <div className="app-shell">
-      <aside className="sidebar">
+      <button
+        type="button"
+        className="hamburger-btn"
+        onClick={() => setMobileMenuOpen((open) => !open)}
+        aria-label={mobileMenuOpen ? t.closeMenu : t.openMenu}
+        aria-expanded={mobileMenuOpen}
+      >
+        {mobileMenuOpen ? "✕" : "☰"}
+      </button>
+
+      <div
+        className={`sidebar-overlay${mobileMenuOpen ? " sidebar-overlay--visible" : ""}`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      <aside className={`sidebar${mobileMenuOpen ? " sidebar--open" : ""}`}>
         <label className="field">
           <span className="field-label">{t.language}</span>
           <select value={lang} onChange={(e) => handleLanguageChange(e.target.value as Lang)}>
@@ -53,16 +95,21 @@ function AppShell() {
         </label>
 
         <div className="mode-tabs">
-          <button type="button" className="mode-tab" onClick={() => setMode("quick")} disabled={mode === "quick"}>
+          <button type="button" className="mode-tab" onClick={() => selectMode("quick")} disabled={mode === "quick"}>
             {t.modes.quick}
           </button>
-          <button type="button" className="mode-tab" onClick={() => setMode("custom")} disabled={mode === "custom"}>
+          <button
+            type="button"
+            className="mode-tab"
+            onClick={() => selectMode("custom")}
+            disabled={mode === "custom"}
+          >
             {t.modes.custom}
           </button>
           <button
             type="button"
             className="mode-tab"
-            onClick={() => setMode("invisible")}
+            onClick={() => selectMode("invisible")}
             disabled={mode === "invisible"}
           >
             {t.modes.invisible}
