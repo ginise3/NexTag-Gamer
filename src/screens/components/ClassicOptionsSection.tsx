@@ -25,12 +25,14 @@ export function ClassicOptionsSection({ t, value, onChange, baseWordIssues }: Cl
   const c = t.classicOptions;
 
   return (
-    <details style={{ marginBottom: "1rem" }}>
-      <summary style={{ cursor: "pointer", fontWeight: 600 }}>{c.heading}</summary>
-      <p style={{ color: "#666", fontSize: "0.85rem", margin: "0.4rem 0 0.75rem" }}>{c.hint}</p>
+    <details className="classic-options">
+      <summary>{c.heading}</summary>
+      <p className="field-hint" style={{ margin: "6px 0 10px" }}>
+        {c.hint}
+      </p>
 
-      <label style={{ display: "block", marginBottom: "0.75rem" }}>
-        <div>{c.baseWordLabel}</div>
+      <label className="field">
+        <span className="field-label">{c.baseWordLabel}</span>
         <input
           type="text"
           value={value.baseWord}
@@ -38,7 +40,7 @@ export function ClassicOptionsSection({ t, value, onChange, baseWordIssues }: Cl
           placeholder={c.baseWordPlaceholder}
         />
         {baseWordIssues.length > 0 && (
-          <ul style={{ color: "#b3261e", margin: "0.25rem 0 0", paddingLeft: "1.25rem", fontSize: "0.85rem" }}>
+          <ul className="field-error-list">
             {baseWordIssues.map((issue, index) => (
               <li key={`${issue.type}-${index}`}>{formatCustomWordsIssue(issue, t)}</li>
             ))}
@@ -46,8 +48,8 @@ export function ClassicOptionsSection({ t, value, onChange, baseWordIssues }: Cl
         )}
       </label>
 
-      <label style={{ display: "block", marginBottom: "0.75rem" }}>
-        <div>{c.stylePresetLabel}</div>
+      <label className="field">
+        <span className="field-label">{c.stylePresetLabel}</span>
         <select
           value={value.stylePreset}
           onChange={(e) => onChange({ ...value, stylePreset: e.target.value as ClassicStylePreset })}
@@ -59,19 +61,19 @@ export function ClassicOptionsSection({ t, value, onChange, baseWordIssues }: Cl
         </select>
       </label>
 
-      <label style={{ display: "block", marginBottom: "0.75rem" }}>
+      <label className="checkbox-row">
         <input
           type="checkbox"
           checked={value.useLeetSpeak}
           onChange={(e) => onChange({ ...value, useLeetSpeak: e.target.checked })}
-        />{" "}
+        />
         {c.leetLabel}
       </label>
 
-      <label style={{ display: "block" }}>
-        <div>
+      <label className="field" style={{ marginBottom: 0 }}>
+        <span className="field-label">
           {c.countLabel}: {value.count}
-        </div>
+        </span>
         <input
           type="range"
           min={MIN_COUNT}

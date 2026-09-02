@@ -14,11 +14,11 @@ interface QuickControlsProps {
 export function QuickControls({ mode, t, lang }: QuickControlsProps) {
   return (
     <div>
-      <h2 style={{ fontSize: "1.1rem" }}>{t.quick.heading}</h2>
-      <p style={{ color: "#666", fontSize: "0.85rem" }}>{t.quick.hint}</p>
+      <h2>{t.quick.heading}</h2>
+      <p className="field-hint">{t.quick.hint}</p>
 
-      <label style={{ display: "block", marginBottom: "0.75rem" }}>
-        <div>{t.quick.nickStyleLabel}</div>
+      <label className="field">
+        <span className="field-label">{t.quick.nickStyleLabel}</span>
         <select value={mode.nickStyle} onChange={(e) => mode.setNickStyle(e.target.value)}>
           <option value="">{t.common.any}</option>
           {NICK_STYLES.map((option) => (
@@ -29,8 +29,8 @@ export function QuickControls({ mode, t, lang }: QuickControlsProps) {
         </select>
       </label>
 
-      <label style={{ display: "block", marginBottom: "0.75rem" }}>
-        <div>{t.common.lengthLabel}</div>
+      <label className="field">
+        <span className="field-label">{t.common.lengthLabel}</span>
         <select value={mode.length} onChange={(e) => mode.setLength(e.target.value as LengthPreference | "")}>
           <option value="">{t.common.lengthOptions.any}</option>
           <option value="short">{t.common.lengthOptions.short}</option>
@@ -39,8 +39,8 @@ export function QuickControls({ mode, t, lang }: QuickControlsProps) {
         </select>
       </label>
 
-      <label style={{ display: "block", marginBottom: "1rem" }}>
-        <input type="checkbox" checked={mode.useNumbers} onChange={(e) => mode.setUseNumbers(e.target.checked)} />{" "}
+      <label className="checkbox-row">
+        <input type="checkbox" checked={mode.useNumbers} onChange={(e) => mode.setUseNumbers(e.target.checked)} />
         {t.common.addNumbers}
       </label>
 

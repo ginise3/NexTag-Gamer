@@ -21,11 +21,11 @@ export function InvisibleControls({ mode, t }: InvisibleControlsProps) {
 
   return (
     <div>
-      <h2 style={{ fontSize: "1.1rem" }}>{t.modes.invisible}</h2>
-      <p style={{ color: "#666", fontSize: "0.85rem" }}>{i.hint}</p>
+      <h2>{t.modes.invisible}</h2>
+      <p className="field-hint">{i.hint}</p>
 
-      <label style={{ display: "block", marginBottom: "0.75rem" }}>
-        <div>{i.typeLabel}</div>
+      <label className="field">
+        <span className="field-label">{i.typeLabel}</span>
         <select value={mode.type} onChange={(e) => mode.setType(e.target.value as InvisibleNicknameType)}>
           {TYPES.map((type) => (
             <option key={type} value={type}>
@@ -35,10 +35,10 @@ export function InvisibleControls({ mode, t }: InvisibleControlsProps) {
         </select>
       </label>
 
-      <label style={{ display: "block", marginBottom: "1rem" }}>
-        <div>
+      <label className="field">
+        <span className="field-label">
           {i.repeatCountLabel}: {mode.repeatCount}
-        </div>
+        </span>
         <input
           type="range"
           min={MIN_REPEAT}
@@ -48,17 +48,7 @@ export function InvisibleControls({ mode, t }: InvisibleControlsProps) {
         />
       </label>
 
-      <p
-        style={{
-          fontSize: "0.8rem",
-          color: "#8a6d00",
-          background: "#fff8e1",
-          padding: "0.5rem 0.6rem",
-          borderRadius: 4,
-        }}
-      >
-        ⚠️ {i.compatibilityNotice}
-      </p>
+      <p className="notice-warning">⚠️ {i.compatibilityNotice}</p>
     </div>
   );
 }

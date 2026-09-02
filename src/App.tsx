@@ -15,8 +15,6 @@ import type { Lang } from "./i18n/translations";
 
 type Mode = "quick" | "custom" | "invisible";
 
-const SIDEBAR_WIDTH = 300;
-
 /**
  * Сайдбар (все настройки ввода) + основная область (приветственный блок и
  * результаты) — по продуктовому решению, компоновка похожа на прежний
@@ -44,32 +42,29 @@ function AppShell() {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "system-ui, sans-serif", lineHeight: 1.5 }}>
-      <aside
-        style={{
-          width: SIDEBAR_WIDTH,
-          flexShrink: 0,
-          padding: "1.5rem 1.25rem",
-          borderRight: "1px solid #e5e5e5",
-          overflowY: "auto",
-        }}
-      >
-        <label style={{ display: "block", marginBottom: "1rem" }}>
-          <div>{t.language}</div>
+    <div className="app-shell">
+      <aside className="sidebar">
+        <label className="field">
+          <span className="field-label">{t.language}</span>
           <select value={lang} onChange={(e) => handleLanguageChange(e.target.value as Lang)}>
             <option value="en">English</option>
             <option value="ru">Русский</option>
           </select>
         </label>
 
-        <div style={{ display: "flex", gap: "0.4rem", marginBottom: "1.25rem", flexWrap: "wrap" }}>
-          <button type="button" onClick={() => setMode("quick")} disabled={mode === "quick"}>
+        <div className="mode-tabs">
+          <button type="button" className="mode-tab" onClick={() => setMode("quick")} disabled={mode === "quick"}>
             {t.modes.quick}
           </button>
-          <button type="button" onClick={() => setMode("custom")} disabled={mode === "custom"}>
+          <button type="button" className="mode-tab" onClick={() => setMode("custom")} disabled={mode === "custom"}>
             {t.modes.custom}
           </button>
-          <button type="button" onClick={() => setMode("invisible")} disabled={mode === "invisible"}>
+          <button
+            type="button"
+            className="mode-tab"
+            onClick={() => setMode("invisible")}
+            disabled={mode === "invisible"}
+          >
             {t.modes.invisible}
           </button>
         </div>
@@ -79,9 +74,9 @@ function AppShell() {
         {mode === "invisible" && <InvisibleControls mode={invisible} t={t} />}
       </aside>
 
-      <main style={{ flex: 1, padding: "2rem 2.5rem", maxWidth: 720 }}>
-        <h1 style={{ marginTop: 0 }}>NexTag Gamer</h1>
-        <p style={{ color: "#666" }}>{t.appTagline}</p>
+      <main className="main-content">
+        <h1>NexTag Gamer</h1>
+        <p className="app-tagline">{t.appTagline}</p>
 
         {mode === "quick" && (
           <NicknameResultsList

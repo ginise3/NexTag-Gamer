@@ -19,19 +19,18 @@ interface AdditionalWordsInputProps {
  */
 export function AdditionalWordsInput({ value, onChangeValue, issues, t }: AdditionalWordsInputProps) {
   return (
-    <label style={{ display: "block", marginBottom: "1rem" }}>
-      <div>
-        {t.custom.additionalWordsLabel} <span style={{ color: "#999", fontWeight: "normal" }}>({t.custom.additionalWordsHint})</span>
-      </div>
+    <label className="field">
+      <span className="field-label">
+        {t.custom.additionalWordsLabel} <span className="field-hint">({t.custom.additionalWordsHint})</span>
+      </span>
       <textarea
         value={value}
         onChange={(e) => onChangeValue(e.target.value)}
         placeholder={t.custom.additionalWordsPlaceholder}
         rows={2}
-        style={{ width: "100%", maxWidth: 420, fontFamily: "inherit" }}
       />
       {issues.length > 0 && (
-        <ul style={{ color: "#b3261e", margin: "0.25rem 0 0", paddingLeft: "1.25rem" }}>
+        <ul className="field-error-list">
           {issues.map((issue, index) => (
             <li key={`${issue.type}-${index}`}>{formatCustomWordsIssue(issue, t)}</li>
           ))}

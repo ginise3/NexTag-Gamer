@@ -19,36 +19,16 @@ interface InvisibleResultsListProps {
 export function InvisibleResultsList({ results, copiedValue, onCopy, onGenerate, t }: InvisibleResultsListProps) {
   return (
     <>
-      <button type="button" onClick={onGenerate}>
+      <button type="button" className="btn-primary" onClick={onGenerate}>
         {results.length === 0 ? t.common.generate : t.common.generateMore}
       </button>
 
       {results.length > 0 && (
-        <ul style={{ listStyle: "none", padding: 0, marginTop: "1rem" }}>
+        <ul className="results-list">
           {results.map((nickname) => (
-            <li
-              key={nickname.value}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                padding: "0.5rem 0",
-                borderBottom: "1px solid #eee",
-              }}
-            >
-              <code
-                style={{
-                  fontSize: "1rem",
-                  border: "1px dashed #ccc",
-                  borderRadius: 4,
-                  padding: "0.15rem 0.6rem",
-                  minWidth: "4rem",
-                  display: "inline-block",
-                }}
-              >
-                {nickname.value}
-              </code>
-              <div style={{ fontSize: "0.8rem", color: "#666" }}>
+            <li key={nickname.value} className="result-row">
+              <code className="result-code-box">{nickname.value}</code>
+              <div className="result-meta">
                 <div>{t.invisible.resultCaption(nickname.value.length)}</div>
                 <div>
                   {t.invisible.charactersUsedLabel}:{" "}

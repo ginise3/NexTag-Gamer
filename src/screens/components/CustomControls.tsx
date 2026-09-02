@@ -16,8 +16,8 @@ interface SingleSelectProps {
 
 function SingleSelect({ label, options, value, onChange, anyLabel, lang }: SingleSelectProps) {
   return (
-    <label style={{ display: "block", marginBottom: "0.75rem" }}>
-      <div>{label}</div>
+    <label className="field">
+      <span className="field-label">{label}</span>
       <select value={value} onChange={(e) => onChange(e.target.value)}>
         <option value="">{anyLabel}</option>
         {options.map((option) => (
@@ -46,21 +46,17 @@ export function CustomControls({ mode, t, lang }: CustomControlsProps) {
 
   return (
     <div>
-      <h2 style={{ fontSize: "1.1rem" }}>{c.heading}</h2>
-      <p style={{ color: "#666", fontSize: "0.85rem" }}>{c.hint}</p>
+      <h2>{c.heading}</h2>
+      <p className="field-hint">{c.hint}</p>
 
-      <div style={{ marginBottom: "0.75rem" }}>
-        <div>
-          {c.genreLabel} <span style={{ color: "#999", fontSize: "0.85rem" }}>({c.genreHint})</span>
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem 0.75rem", maxHeight: 160, overflowY: "auto" }}>
+      <div className="field">
+        <span className="field-label">
+          {c.genreLabel} <span className="field-hint">({c.genreHint})</span>
+        </span>
+        <div className="genre-grid scroll-list">
           {GENRES.map((genre) => (
-            <label key={genre.id} style={{ fontSize: "0.85rem" }}>
-              <input
-                type="checkbox"
-                checked={mode.genres.has(genre.id)}
-                onChange={() => mode.toggleGenre(genre.id)}
-              />{" "}
+            <label key={genre.id}>
+              <input type="checkbox" checked={mode.genres.has(genre.id)} onChange={() => mode.toggleGenre(genre.id)} />
               {genre.label[lang]}
             </label>
           ))}
@@ -100,8 +96,8 @@ export function CustomControls({ mode, t, lang }: CustomControlsProps) {
         lang={lang}
       />
 
-      <label style={{ display: "block", marginBottom: "0.75rem" }}>
-        <div>{t.common.lengthLabel}</div>
+      <label className="field">
+        <span className="field-label">{t.common.lengthLabel}</span>
         <select value={mode.length} onChange={(e) => mode.setLength(e.target.value as LengthPreference | "")}>
           <option value="">{t.common.lengthOptions.any}</option>
           <option value="short">{t.common.lengthOptions.short}</option>
@@ -117,8 +113,8 @@ export function CustomControls({ mode, t, lang }: CustomControlsProps) {
         t={t}
       />
 
-      <label style={{ display: "block", marginBottom: "1rem" }}>
-        <input type="checkbox" checked={mode.useNumbers} onChange={(e) => mode.setUseNumbers(e.target.checked)} />{" "}
+      <label className="checkbox-row">
+        <input type="checkbox" checked={mode.useNumbers} onChange={(e) => mode.setUseNumbers(e.target.checked)} />
         {t.common.addNumbers}
       </label>
 
