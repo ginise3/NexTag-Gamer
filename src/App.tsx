@@ -15,6 +15,12 @@ import type { Lang } from "./i18n/translations";
 
 type Mode = "quick" | "custom" | "invisible";
 
+const MOBILE_BREAKPOINT_QUERY = "(max-width: 768px)";
+
+function isMobileViewportNow(): boolean {
+  return typeof window !== "undefined" && window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches;
+}
+
 /**
  * Сайдбар (все настройки ввода) + основная область (приветственный блок и
  * результаты) — по продуктовому решению, компоновка похожа на прежний
@@ -26,7 +32,14 @@ type Mode = "quick" | "custom" | "invisible";
 function AppShell() {
   const { lang, t, setLang } = useLanguage();
   const [mode, setMode] = useState<Mode>("quick");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // По умолчанию открыт — на мобильных сайдбар виден сразу при запуске,
+  // без обязательного тапа по гамбургеру (продуктовое решение пользователя).
+  // На десктопе гамбургер и оверлей скрыты через CSS в любом случае (см.
+  // App.css) — но эффекты ниже (блокировка скролла, Escape) всё равно
+  // должны учитывать реальную ширину экрана, а не только это состояние,
+  // иначе десктоп молча остался бы с заблокированным скроллом навсегда.
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(true);
+  const [isMobileViewport, setIsMobileViewport] = useState(isMobileViewportNow);
 
   const quick = useQuickNickname(t, lang);
   const custom = useCustomNickname(t, lang);
@@ -37,25 +50,36 @@ function AppShell() {
     trackAppOpen();
   }, []);
 
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_BREAKPOINT_QUERY);
+    function handleChange(e: MediaQueryListEvent) {
+      setIsMobileViewport(e.matches);
+    }
+    mql.addEventListener("change", handleChange);
+    return () => mql.removeEventListener("change", handleChange);
+  }, []);
+
+  const mobileMenuVisible = mobileMenuOpen && isMobileViewport;
+
   // Закрытие оверлея по Escape — на мобильных сайдбар открывается поверх
   // контента (не сдвигая его), как гамбургер-меню Streamlit.
   useEffect(() => {
-    if (!mobileMenuOpen) return;
+    if (!mobileMenuVisible) return;
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") setMobileMenuOpen(false);
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [mobileMenuOpen]);
+  }, [mobileMenuVisible]);
 
   // Блокируем скролл фона, пока открыта мобильная панель — иначе страница
   // под затемнением всё равно прокручивается вместе с меню.
   useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    document.body.style.overflow = mobileMenuVisible ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuVisible]);
 
   function handleLanguageChange(next: Lang) {
     setLang(next);
@@ -73,19 +97,19 @@ function AppShell() {
         type="button"
         className="hamburger-btn"
         onClick={() => setMobileMenuOpen((open) => !open)}
-        aria-label={mobileMenuOpen ? t.closeMenu : t.openMenu}
-        aria-expanded={mobileMenuOpen}
+        aria-label={mobileMenuVisible ? t.closeMenu : t.openMenu}
+        aria-expanded={mobileMenuVisible}
       >
-        {mobileMenuOpen ? "✕" : "☰"}
+        {mobileMenuVisible ? "✕" : "☰"}
       </button>
 
       <div
-        className={`sidebar-overlay${mobileMenuOpen ? " sidebar-overlay--visible" : ""}`}
+        className={`sidebar-overlay${mobileMenuVisible ? " sidebar-overlay--visible" : ""}`}
         onClick={() => setMobileMenuOpen(false)}
         aria-hidden="true"
       />
 
-      <aside className={`sidebar${mobileMenuOpen ? " sidebar--open" : ""}`}>
+      <aside className={`sidebar${mobileMenuVisible ? " sidebar--open" : ""}`}>
         <label className="field">
           <span className="field-label">{t.language}</span>
           <select value={lang} onChange={(e) => handleLanguageChange(e.target.value as Lang)}>
