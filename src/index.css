@@ -5,8 +5,8 @@
   --text: #57616f;
   --text-h: #16181d;
   --bg: #ffffff;
-  --surface: #f6f7f9;
-  --border: #e2e4e8;
+  --surface: #eef0f5;
+  --border: #dde0e6;
   --code-bg: #f4f3ec;
 
   /* Акцент */
@@ -42,8 +42,8 @@
     --text: #a7adb6;
     --text-h: #f3f4f6;
     --bg: #16171d;
-    --surface: #1c1e25;
-    --border: #2e303a;
+    --surface: #20222b;
+    --border: #333541;
     --code-bg: #1f2028;
     --accent: #a184fc;
     --accent-hover: #b49bfd;
