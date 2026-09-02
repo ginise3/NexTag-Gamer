@@ -51,6 +51,16 @@ export interface Translations {
     additionalWordsPlaceholder: string;
     emptyHint: string;
   };
+  invisible: {
+    hint: string;
+    typeLabel: string;
+    types: { fully_invisible: string; almost_invisible: string; spaced: string };
+    repeatCountLabel: string;
+    /** Ровно текст из Task.md §22 — обязательная оговорка о совместимости. */
+    compatibilityNotice: string;
+    charactersUsedLabel: string;
+    resultCaption: (charCount: number) => string;
+  };
   additionalWordsIssues: {
     cyrillic: (raw: string) => string;
     disallowedCharacters: (raw: string) => string;
@@ -110,6 +120,19 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       emptyHint:
         "You can leave everything empty and just press Generate — filling in fields makes the result more personal.",
     },
+    invisible: {
+      hint: "A separate mode that does not use the Genre/Setting/Role/... profile — pick a type and press Generate.",
+      typeLabel: "Type",
+      types: {
+        fully_invisible: "Fully invisible",
+        almost_invisible: "Almost invisible",
+        spaced: "Spaced",
+      },
+      repeatCountLabel: "Length",
+      compatibilityNotice: "Compatibility depends on the game or platform.",
+      charactersUsedLabel: "Characters used",
+      resultCaption: (charCount) => `${charCount} character${charCount === 1 ? "" : "s"} — looks blank above`,
+    },
     additionalWordsIssues: {
       cyrillic: (raw) => `"${raw}" — please enter custom words in English only.`,
       disallowedCharacters: (raw) =>
@@ -167,6 +190,19 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       additionalWordsPlaceholder: "dragon, frost, ancient wolf",
       emptyHint:
         "Можно оставить всё пустым и просто нажать «Сгенерировать» — заполнение полей делает результат более персональным.",
+    },
+    invisible: {
+      hint: "Отдельный режим, не использующий профиль Genre/Setting/Role/... — выберите тип и нажмите «Сгенерировать».",
+      typeLabel: "Тип",
+      types: {
+        fully_invisible: "Полностью невидимый",
+        almost_invisible: "Почти невидимый",
+        spaced: "С пробелами",
+      },
+      repeatCountLabel: "Длина",
+      compatibilityNotice: "Совместимость зависит от игры или платформы.",
+      charactersUsedLabel: "Использованные символы",
+      resultCaption: (charCount) => `${charCount} симв. — сверху выглядит пустым`,
     },
     additionalWordsIssues: {
       cyrillic: (raw) => `«${raw}» — дополнительные слова нужно вводить только на английском языке.`,
