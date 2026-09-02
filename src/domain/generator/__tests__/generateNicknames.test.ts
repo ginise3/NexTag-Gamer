@@ -61,3 +61,24 @@ describe("generateNicknames — Task.md §16-§19", () => {
     expect(generateNicknames(richProfile(), { count: 0 })).toEqual([]);
   });
 });
+
+describe("generateNicknames — classic options layered on top of the canonical model", () => {
+  it("applies leet-speak post-processing when requested, without breaking validation", () => {
+    const results = generateNicknames(richProfile(), { count: 10, useLeetSpeak: true });
+    expect(results.length).toBeGreaterThan(0);
+    // хотя бы часть результатов должна содержать цифры-заменители leet-speak
+    expect(results.some((r) => /[0-9]/.test(r.value))).toBe(true);
+  });
+
+  it("lets an empty profile draw material from extraFlavorWords (classic style preset)", () => {
+    const results = generateNicknames(createEmptySemanticProfile(), {
+      count: 15,
+      extraFlavorWords: ["bunny", "cupcake", "sugar"],
+    });
+    expect(results.length).toBeGreaterThan(0);
+    const usesClassicWord = results.some((r) =>
+      ["bunny", "cupcake", "sugar"].some((w) => r.value.toLowerCase().includes(w)),
+    );
+    expect(usesClassicWord).toBe(true);
+  });
+});

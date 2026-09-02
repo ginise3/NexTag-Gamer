@@ -10,6 +10,7 @@
  * слова" — поэтому мутации точечные (одна гласная/согласная за раз), а не
  * побуквенная случайная замена.
  */
+import { LEET_MAP } from "../data/classicWords";
 import { pickRandom, type Rng } from "./rng";
 
 export function onlyLetters(word: string): string {
@@ -96,6 +97,19 @@ export function compactForm(word: string): string | undefined {
   const compacted = clean[0] + clean.slice(1).replace(/[aeiou]/g, "");
   if (compacted.length < 2 || compacted.length === clean.length) return undefined;
   return compacted;
+}
+
+/**
+ * Leet-speak — необязательная "классическая" допопция поверх канонической
+ * модели (не часть Task.md §16, перенесена из прежнего Streamlit-генератора
+ * по отдельному продуктовому решению). Применяется как постобработка уже
+ * построенного ника, а не как отдельный механизм §16.
+ */
+export function applyLeetSpeak(value: string): string {
+  return value
+    .split("")
+    .map((ch) => LEET_MAP[ch.toLowerCase()] ?? ch)
+    .join("");
 }
 
 /**

@@ -65,7 +65,15 @@ function activateSemanticFlavor(map: Map<string, MaterialWord>, trigger: string)
   }
 }
 
-export function buildMaterialPool(profile: SemanticProfile, rng: Rng = Math.random): MaterialPool {
+export function buildMaterialPool(
+  profile: SemanticProfile,
+  rng: Rng = Math.random,
+  /** Необязательная "классическая" допопция поверх канонической модели
+   * (Task.md §6-§8 не меняются): дополнительные flavor-слова, например из
+   * прежнего Streamlit-генератора (style preset gamer/cute). Не влияет на
+   * то, что считается известным/неизвестным custom word. */
+  extraFlavorWords: readonly string[] = [],
+): MaterialPool {
   const map = new Map<string, MaterialWord>();
   const unknownKeywords: string[] = [];
   const userNumbers: string[] = [];
@@ -110,6 +118,10 @@ export function buildMaterialPool(profile: SemanticProfile, rng: Rng = Math.rand
   if (profile.nickStyle) {
     addWord(map, profile.nickStyle, PARAMETER_WEIGHTS.nickStyle, "nick_style");
     activateSemanticFlavor(map, profile.nickStyle);
+  }
+
+  for (const word of extraFlavorWords) {
+    addWord(map, word, FLAVOR_WEIGHT, "semantic_flavor");
   }
 
   let usedFallback = false;
