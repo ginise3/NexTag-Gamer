@@ -1,4 +1,10 @@
 import { useState } from "react";
+import {
+  trackGenerationCompleted,
+  trackGenerationStarted,
+  trackNicknameCopied,
+  trackRegenerateClicked,
+} from "../../analytics";
 import { generateInvisibleNickname, validateInvisibleNickname } from "../../domain/invisible";
 import type { GeneratedInvisibleNickname, InvisibleNicknameType } from "../../domain/invisible";
 
@@ -19,6 +25,10 @@ export function useInvisibleNickname() {
   const [copiedValue, setCopiedValue] = useState<string | null>(null);
 
   function handleGenerate() {
+    const isRegenerate = results.length > 0;
+    trackGenerationStarted("invisible");
+    if (isRegenerate) trackRegenerateClicked("invisible");
+
     const seen = new Set(shownValues);
     const next: GeneratedInvisibleNickname[] = [];
     let attempts = 0;
@@ -34,6 +44,7 @@ export function useInvisibleNickname() {
 
     setResults(next);
     setShownValues((prev) => [...prev, ...next.map((r) => r.value)]);
+    trackGenerationCompleted("invisible", next.length);
   }
 
   async function copy(value: string) {
@@ -41,6 +52,7 @@ export function useInvisibleNickname() {
       await navigator.clipboard.writeText(value);
       setCopiedValue(value);
       setTimeout(() => setCopiedValue((current) => (current === value ? null : current)), COPY_FEEDBACK_MS);
+      trackNicknameCopied("invisible");
     } catch {
       // Clipboard API недоступен — молча игнорируем.
     }

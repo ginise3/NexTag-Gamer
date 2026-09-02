@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import { trackAppOpen, trackLanguageSelected } from "./analytics";
 import { CustomControls } from "./screens/components/CustomControls";
 import { InvisibleControls } from "./screens/components/InvisibleControls";
 import { InvisibleResultsList } from "./screens/components/InvisibleResultsList";
@@ -32,6 +33,16 @@ function AppShell() {
   const custom = useCustomNickname();
   const invisible = useInvisibleNickname();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- намеренно один раз за сессию (Task.md §32 app_open)
+  useEffect(() => {
+    trackAppOpen();
+  }, []);
+
+  function handleLanguageChange(next: Lang) {
+    setLang(next);
+    trackLanguageSelected(next);
+  }
+
   return (
     <div style={{ display: "flex", minHeight: "100vh", fontFamily: "system-ui, sans-serif", lineHeight: 1.5 }}>
       <aside
@@ -45,7 +56,7 @@ function AppShell() {
       >
         <label style={{ display: "block", marginBottom: "1rem" }}>
           <div>{t.language}</div>
-          <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
+          <select value={lang} onChange={(e) => handleLanguageChange(e.target.value as Lang)}>
             <option value="en">English</option>
             <option value="ru">Русский</option>
           </select>

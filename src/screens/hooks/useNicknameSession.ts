@@ -16,7 +16,10 @@ export function useNicknameSession() {
   const [shownValues, setShownValues] = useState<string[]>([]);
   const [copiedValue, setCopiedValue] = useState<string | null>(null);
 
-  function generate(profile: SemanticProfile, options: Omit<GenerateNicknamesOptions, "previousResults"> = {}) {
+  function generate(
+    profile: SemanticProfile,
+    options: Omit<GenerateNicknamesOptions, "previousResults"> = {},
+  ): GeneratedNickname[] {
     const next = generateNicknames(profile, {
       count: RESULTS_PER_GENERATION,
       ...options,
@@ -24,6 +27,7 @@ export function useNicknameSession() {
     });
     setResults(next);
     setShownValues((prev) => [...prev, ...next.map((r) => r.value)]);
+    return next;
   }
 
   async function copy(value: string) {
