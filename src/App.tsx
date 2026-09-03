@@ -6,6 +6,7 @@ import { InvisibleControls } from "./screens/components/InvisibleControls";
 import { InvisibleResultsList } from "./screens/components/InvisibleResultsList";
 import { NicknameResultsList } from "./screens/components/NicknameResultsList";
 import { QuickControls } from "./screens/components/QuickControls";
+import { ResetSettingsButton } from "./screens/components/ResetSettingsButton";
 import { useCustomNickname } from "./screens/hooks/useCustomNickname";
 import { useInvisibleNickname } from "./screens/hooks/useInvisibleNickname";
 import { useQuickNickname } from "./screens/hooks/useQuickNickname";
@@ -102,6 +103,14 @@ function AppShell() {
     setMobileMenuOpen(false);
   }
 
+  // Одна кнопка сброса на всю панель — сбрасывает настройки только
+  // текущего активного режима (Task.md §4: режимы самостоятельны).
+  function resetActiveMode() {
+    if (mode === "quick") quick.resetSettings();
+    else if (mode === "custom") custom.resetSettings();
+    else invisible.resetSettings();
+  }
+
   return (
     <div className="app-shell">
       <button
@@ -150,6 +159,8 @@ function AppShell() {
             {t.modes.invisible}
           </button>
         </div>
+
+        <ResetSettingsButton onReset={resetActiveMode} t={t} />
 
         {mode === "quick" && (
           <QuickControls mode={quick} t={t} lang={lang} onGenerate={() => generateAndClose(quick.handleGenerate)} />

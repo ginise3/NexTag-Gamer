@@ -2,7 +2,6 @@ import type { InvisibleNicknameType } from "../../domain/invisible";
 import type { Translations } from "../../i18n/translations";
 import type { useInvisibleNickname } from "../hooks/useInvisibleNickname";
 import { GenerateButton } from "./GenerateButton";
-import { ResetSettingsButton } from "./ResetSettingsButton";
 
 interface InvisibleControlsProps {
   mode: ReturnType<typeof useInvisibleNickname>;
@@ -24,10 +23,7 @@ export function InvisibleControls({ mode, t, onGenerate }: InvisibleControlsProp
 
   return (
     <div>
-      <div className="panel-header">
-        <h2>{t.modes.invisible}</h2>
-        <ResetSettingsButton onReset={mode.resetSettings} t={t} />
-      </div>
+      <h2>{t.modes.invisible}</h2>
       <p className="field-hint">{i.hint}</p>
 
       <label className="field">

@@ -5,7 +5,6 @@ import type { useCustomNickname } from "../hooks/useCustomNickname";
 import { AdditionalWordsInput } from "./AdditionalWordsInput";
 import { GenerateButton } from "./GenerateButton";
 import { NicknameCountField } from "./NicknameCountField";
-import { ResetSettingsButton } from "./ResetSettingsButton";
 
 interface SingleSelectProps {
   label: string;
@@ -49,10 +48,7 @@ export function CustomControls({ mode, t, lang, onGenerate }: CustomControlsProp
 
   return (
     <div>
-      <div className="panel-header">
-        <h2>{c.heading}</h2>
-        <ResetSettingsButton onReset={mode.resetSettings} t={t} />
-      </div>
+      <h2>{c.heading}</h2>
       <p className="field-hint">{c.hint}</p>
 
       <div className="field">
