@@ -122,3 +122,20 @@ describe("App — language switch actually re-renders the UI", () => {
     window.localStorage.clear();
   });
 });
+
+describe("App — Reset settings actually clears the form", () => {
+  it("clears Quick Nickname's Nick Style back to its default after Reset is clicked", () => {
+    window.localStorage.setItem("nextag-gamer:lang", "en");
+    const { container } = render(<App />);
+
+    // selects[0] = language, selects[1] = Nick Style (Quick mode's first field).
+    const nickStyleSelect = container.querySelectorAll("select")[1] as HTMLSelectElement;
+    fireEvent.change(nickStyleSelect, { target: { value: "cyber" } });
+    expect(nickStyleSelect).toHaveValue("cyber");
+
+    fireEvent.click(screen.getByText(TRANSLATIONS.en.common.resetSettings));
+
+    expect(nickStyleSelect).toHaveValue("");
+    window.localStorage.clear();
+  });
+});

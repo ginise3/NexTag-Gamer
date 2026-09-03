@@ -90,6 +90,22 @@ export function useCustomNickname(lang: Lang) {
     trackNicknameCopied("custom");
   }
 
+  /** Сброс настроек к значениям по умолчанию (в т.ч. до первой генерации) —
+   * иначе при возврате в панель после генерации там остаются старые
+   * значения, и ввести новые можно только вручную стерев их одно за другим. */
+  function resetSettings() {
+    setGenres(new Set());
+    setSettingState("");
+    setRoleState("");
+    setPlayStyleState("");
+    setNickStyleState("");
+    setLength("");
+    setAdditionalWordsRaw("");
+    setUseNumbers(false);
+    setCount(DEFAULT_NICKNAME_COUNT);
+    session.reset();
+  }
+
   return {
     genres,
     toggleGenre,
@@ -112,6 +128,7 @@ export function useCustomNickname(lang: Lang) {
     setCount,
     badges,
     handleGenerate,
+    resetSettings,
     results: session.results,
     copiedValue: session.copiedValue,
     copy,

@@ -41,5 +41,14 @@ export function useNicknameSession() {
     }
   }
 
-  return { results, copiedValue, generate, copy };
+  /** Очищает показанные результаты и историю "уже выданных" ников —
+   * используется кнопкой сброса настроек, чтобы старые результаты не
+   * оставались на экране/в памяти дедупликации после сброса параметров. */
+  function reset() {
+    setResults([]);
+    setShownValues([]);
+    setCopiedValue(null);
+  }
+
+  return { results, copiedValue, generate, copy, reset };
 }

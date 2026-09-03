@@ -49,6 +49,7 @@ export interface Translations {
     lengthLabel: string;
     lengthOptions: { any: string; short: string; medium: string; long: string };
     countLabel: string;
+    resetSettings: string;
     emptyStateTitle: string;
     examplesLabel: string;
   };
@@ -115,6 +116,7 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       lengthLabel: "Length",
       lengthOptions: { any: "Any length", short: "Short", medium: "Medium", long: "Long" },
       countLabel: "Number of nicknames",
+      resetSettings: "Reset settings",
       emptyStateTitle: "No nicknames yet",
       examplesLabel: "Examples",
     },
@@ -195,6 +197,7 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       lengthLabel: "Длина",
       lengthOptions: { any: "Любая длина", short: "Короткая", medium: "Средняя", long: "Длинная" },
       countLabel: "Количество ников",
+      resetSettings: "Сбросить настройки",
       emptyStateTitle: "Пока нет ни одного ника",
       examplesLabel: "Примеры",
     },

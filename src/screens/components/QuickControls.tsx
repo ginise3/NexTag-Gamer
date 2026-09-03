@@ -4,6 +4,7 @@ import type { Lang, Translations } from "../../i18n/translations";
 import type { useQuickNickname } from "../hooks/useQuickNickname";
 import { GenerateButton } from "./GenerateButton";
 import { NicknameCountField } from "./NicknameCountField";
+import { ResetSettingsButton } from "./ResetSettingsButton";
 
 interface QuickControlsProps {
   mode: ReturnType<typeof useQuickNickname>;
@@ -16,7 +17,10 @@ interface QuickControlsProps {
 export function QuickControls({ mode, t, lang, onGenerate }: QuickControlsProps) {
   return (
     <div>
-      <h2>{t.quick.heading}</h2>
+      <div className="panel-header">
+        <h2>{t.quick.heading}</h2>
+        <ResetSettingsButton onReset={mode.resetSettings} t={t} />
+      </div>
       <p className="field-hint">{t.quick.hint}</p>
 
       <label className="field">

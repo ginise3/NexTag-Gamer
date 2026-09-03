@@ -50,6 +50,17 @@ export function useQuickNickname(lang: Lang) {
     trackNicknameCopied("quick");
   }
 
+  /** Сброс настроек к значениям по умолчанию (в т.ч. до первой генерации) —
+   * иначе при возврате в панель после генерации там остаются старые
+   * значения, и ввести новые можно только вручную стерев их одно за другим. */
+  function resetSettings() {
+    setNickStyleState("");
+    setLength("");
+    setUseNumbers(false);
+    setCount(DEFAULT_NICKNAME_COUNT);
+    session.reset();
+  }
+
   return {
     nickStyle,
     setNickStyle,
@@ -61,6 +72,7 @@ export function useQuickNickname(lang: Lang) {
     setCount,
     badges,
     handleGenerate,
+    resetSettings,
     results: session.results,
     copiedValue: session.copiedValue,
     copy,

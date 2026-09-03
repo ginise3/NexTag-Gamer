@@ -11,6 +11,8 @@ import type { GeneratedInvisibleNickname, InvisibleNicknameType } from "../../do
 const RESULTS_PER_GENERATION = 5;
 const MAX_ATTEMPTS = 40;
 const COPY_FEEDBACK_MS = 1500;
+const DEFAULT_TYPE: InvisibleNicknameType = "fully_invisible";
+const DEFAULT_REPEAT_COUNT = 3;
 
 /**
  * Состояние + генерация для режима Invisible Nickname (Task.md §20–§22).
@@ -18,8 +20,8 @@ const COPY_FEEDBACK_MS = 1500;
  * Invisible Nickname не использует SemanticProfile (§20).
  */
 export function useInvisibleNickname() {
-  const [type, setType] = useState<InvisibleNicknameType>("fully_invisible");
-  const [repeatCount, setRepeatCount] = useState(3);
+  const [type, setType] = useState<InvisibleNicknameType>(DEFAULT_TYPE);
+  const [repeatCount, setRepeatCount] = useState(DEFAULT_REPEAT_COUNT);
   const [results, setResults] = useState<GeneratedInvisibleNickname[]>([]);
   const [shownValues, setShownValues] = useState<string[]>([]);
   const [copiedValue, setCopiedValue] = useState<string | null>(null);
@@ -58,5 +60,16 @@ export function useInvisibleNickname() {
     }
   }
 
-  return { type, setType, repeatCount, setRepeatCount, results, copiedValue, handleGenerate, copy };
+  /** Сброс настроек к значениям по умолчанию (в т.ч. до первой генерации) —
+   * иначе при возврате в панель после генерации там остаются старые
+   * значения, и ввести новые можно только вручную стерев их одно за другим. */
+  function resetSettings() {
+    setType(DEFAULT_TYPE);
+    setRepeatCount(DEFAULT_REPEAT_COUNT);
+    setResults([]);
+    setShownValues([]);
+    setCopiedValue(null);
+  }
+
+  return { type, setType, repeatCount, setRepeatCount, results, copiedValue, handleGenerate, resetSettings, copy };
 }
