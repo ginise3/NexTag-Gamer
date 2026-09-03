@@ -109,9 +109,9 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
     openMenu: "Open menu",
     closeMenu: "Close menu",
     modes: {
-      quick: "Quick Nickname",
-      custom: "Custom Nickname",
-      invisible: "Invisible Nickname",
+      quick: "Quick Nick",
+      custom: "Custom Nick",
+      invisible: "Invisible Nick",
       comingSoon: "coming soon",
     },
     common: {
@@ -141,12 +141,12 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       multi_word_form: "Multi-word",
     },
     quick: {
-      heading: "Quick Nickname",
+      heading: "Quick Nick",
       hint: "Optional settings — leave everything as is and just press Generate.",
       nickStyleLabel: "Nick Style",
     },
     custom: {
-      heading: "Custom Nickname",
+      heading: "Custom Nick",
       hint: "Describe the nickname you want — every field below is optional, fill in as much or as little as you like.",
       genreLabel: "Genre",
       genreHint: "optional, pick any number",
@@ -200,7 +200,7 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
     closeMenu: "Закрыть меню",
     modes: {
       quick: "Быстрый ник",
-      custom: "Персональный ник",
+      custom: "Индивидуальный ник",
       invisible: "Невидимый ник",
       comingSoon: "скоро",
     },
@@ -236,7 +236,7 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       nickStyleLabel: "Стиль ника",
     },
     custom: {
-      heading: "Персональный ник",
+      heading: "Индивидуальный ник",
       hint: "Опишите нужный вам ник — каждое поле ниже необязательно, заполните столько, сколько хотите.",
       genreLabel: "Жанр",
       genreHint: "необязательно, можно выбрать несколько",
