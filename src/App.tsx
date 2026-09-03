@@ -72,14 +72,14 @@ function AppShell() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [mobileMenuVisible]);
 
-  // Блокируем скролл фона, пока открыта мобильная панель — иначе страница
-  // под затемнением всё равно прокручивается вместе с меню.
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuVisible ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuVisible]);
+  // Раньше здесь стоял document.body.style.overflow = "hidden" на время
+  // открытой панели. Убрано: `overflow: hidden` на <body> в сочетании с
+  // `position: fixed`-панелью — известная проблемная комбинация в iOS
+  // Safari, из-за которой находящиеся внутри такой панели нативные
+  // элементы форм (в частности <select>) иногда не реагируют на выбор
+  // значения как положено. Цена отказа — фон может слегка прокручиваться
+  // за затемнением, пока панель открыта; это меньшее зло, чем нерабочий
+  // выбор языка.
 
   function handleLanguageChange(next: Lang) {
     setLang(next);
