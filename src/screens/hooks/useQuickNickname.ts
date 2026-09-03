@@ -8,50 +8,40 @@ import {
   trackRegenerateClicked,
 } from "../../analytics";
 import { createEmptySemanticProfile, type LengthPreference } from "../../domain/types";
-import type { Lang, Translations } from "../../i18n/translations";
+import type { Lang } from "../../i18n/translations";
 import { computeBatchBadges } from "./batchBadges";
-import { useClassicOptions } from "./useClassicOptions";
+import { DEFAULT_NICKNAME_COUNT } from "./nicknameCount";
 import { useNicknameSession } from "./useNicknameSession";
 
 /** Состояние + генерация для режима Quick Nickname (Task.md §5). */
-export function useQuickNickname(t: Translations, lang: Lang) {
+export function useQuickNickname(lang: Lang) {
   const [nickStyle, setNickStyleState] = useState("");
   const [length, setLength] = useState<LengthPreference | "">("");
   const [useNumbers, setUseNumbers] = useState(false);
+  const [count, setCount] = useState(DEFAULT_NICKNAME_COUNT);
 
   function setNickStyle(value: string) {
     setNickStyleState(value);
     if (value) trackParameterSelected("nick_style", value);
   }
 
-  const classic = useClassicOptions();
   const session = useNicknameSession();
 
-  const badges = useMemo(
-    () => computeBatchBadges(nickStyle, classic.state, t, lang),
-    [nickStyle, classic.state, t, lang],
-  );
+  const badges = useMemo(() => computeBatchBadges(nickStyle, lang), [nickStyle, lang]);
 
   function handleGenerate() {
     const isRegenerate = session.results.length > 0;
-    const customWords = classic.mergeBaseWordInto([]);
     const profile = {
       ...createEmptySemanticProfile(),
       nickStyle: nickStyle || undefined,
       length: length || undefined,
-      customWords,
     };
 
     trackGenerationStarted("quick");
     if (isRegenerate) trackRegenerateClicked("quick");
-    trackCustomWordsUsed(customWords.length);
+    trackCustomWordsUsed(0);
 
-    const next = session.generate(profile, {
-      useNumbers,
-      count: classic.state.count,
-      extraFlavorWords: classic.extraFlavorWords,
-      useLeetSpeak: classic.state.useLeetSpeak,
-    });
+    const next = session.generate(profile, { useNumbers, count });
     trackGenerationCompleted("quick", next.length);
   }
 
@@ -67,7 +57,8 @@ export function useQuickNickname(t: Translations, lang: Lang) {
     setLength,
     useNumbers,
     setUseNumbers,
-    classic,
+    count,
+    setCount,
     badges,
     handleGenerate,
     results: session.results,

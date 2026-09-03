@@ -14,5 +14,3 @@ export {
   PARAMETER_WEIGHTS,
   WORD_SEPARATORS,
 } from "./generationModifiers";
-export { CLASSIC_GAMER_WORDS, CLASSIC_CUTE_WORDS, LEET_MAP, classicStyleWords } from "./classicWords";
-export type { ClassicStylePreset } from "./classicWords";

@@ -1,10 +1,12 @@
 import type { InvisibleNicknameType } from "../../domain/invisible";
 import type { Translations } from "../../i18n/translations";
 import type { useInvisibleNickname } from "../hooks/useInvisibleNickname";
+import { GenerateButton } from "./GenerateButton";
 
 interface InvisibleControlsProps {
   mode: ReturnType<typeof useInvisibleNickname>;
   t: Translations;
+  onGenerate: () => void;
 }
 
 const TYPES: InvisibleNicknameType[] = ["fully_invisible", "almost_invisible", "spaced"];
@@ -16,7 +18,7 @@ const MAX_REPEAT = 10;
  * длину. Обязательная оговорка о совместимости (§22) показана здесь же —
  * пользователь должен увидеть её до генерации, а не только в результате.
  */
-export function InvisibleControls({ mode, t }: InvisibleControlsProps) {
+export function InvisibleControls({ mode, t, onGenerate }: InvisibleControlsProps) {
   const i = t.invisible;
 
   return (
@@ -49,6 +51,8 @@ export function InvisibleControls({ mode, t }: InvisibleControlsProps) {
       </label>
 
       <p className="notice-warning">⚠️ {i.compatibilityNotice}</p>
+
+      <GenerateButton hasResults={mode.results.length > 0} onGenerate={onGenerate} t={t} />
     </div>
   );
 }

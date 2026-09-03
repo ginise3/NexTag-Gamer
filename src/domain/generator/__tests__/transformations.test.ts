@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  applyLeetSpeak,
   applyLetterReplacement,
   applyPhoneticVariation,
   capitalize,
@@ -64,17 +63,6 @@ describe("compactForm", () => {
 
   it("returns undefined for very short words", () => {
     expect(compactForm("ai")).toBeUndefined();
-  });
-});
-
-describe("applyLeetSpeak (classic option ported from the old Streamlit generator)", () => {
-  it("maps a/e/i/o/s/t to their digit look-alikes, case-insensitively", () => {
-    expect(applyLeetSpeak("Test")).toBe("7357");
-    expect(applyLeetSpeak("FrostWolf")).toBe("Fr057W0lf");
-  });
-
-  it("leaves unmapped characters untouched", () => {
-    expect(applyLeetSpeak("Wolf_77")).toBe("W0lf_77");
   });
 });
 

@@ -16,7 +16,6 @@ import { validateNickname } from "../validator";
 import { buildMaterialPool } from "./materialPool";
 import * as mechanisms from "./mechanisms";
 import { pickRandom, shuffle, type Rng } from "./rng";
-import { applyLeetSpeak } from "./transformations";
 import type { GeneratedNickname, GenerationMechanism } from "./types";
 
 export type { GeneratedNickname, GenerationMechanism } from "./types";
@@ -47,16 +46,6 @@ export interface GenerateNicknamesOptions {
   previousResults?: readonly string[];
   /** Инжектируемый источник случайности (по умолчанию Math.random) — для тестов. */
   rng?: Rng;
-  /**
-   * "Классические" допопции поверх канонической модели (продуктовое
-   * решение — см. переписку): не входят в Task.md §16, переносят
-   * поведение прежнего Streamlit-генератора как необязательную приправу.
-   */
-  /** Подмешать дополнительные flavor-слова в material pool (например, из
-   * старого style preset gamer/cute) — не заменяет genre/setting/role/... */
-  extraFlavorWords?: readonly string[];
-  /** Применить leet-speak постобработку к результату (a→4, o→0, ...). */
-  useLeetSpeak?: boolean;
 }
 
 const DEFAULT_COUNT = 8;
@@ -68,17 +57,10 @@ export function generateNicknames(
   profile: SemanticProfile,
   options: GenerateNicknamesOptions = {},
 ): GeneratedNickname[] {
-  const {
-    count = DEFAULT_COUNT,
-    useNumbers = false,
-    previousResults = [],
-    rng = Math.random,
-    extraFlavorWords = [],
-    useLeetSpeak = false,
-  } = options;
+  const { count = DEFAULT_COUNT, useNumbers = false, previousResults = [], rng = Math.random } = options;
   if (count <= 0) return [];
 
-  const pool = buildMaterialPool(profile, rng, extraFlavorWords);
+  const pool = buildMaterialPool(profile, rng);
   const mechanismOrder = shuffle(ALL_MECHANISMS, rng);
 
   const previousLower = new Set(previousResults.map((v) => v.toLowerCase()));
@@ -94,10 +76,6 @@ export function generateNicknames(
 
     let candidate = MECHANISM_FNS[mechanism](pool, rng);
     if (!candidate) continue;
-
-    if (useLeetSpeak) {
-      candidate = applyLeetSpeak(candidate);
-    }
 
     if (useNumbers && rng() < NUMBER_SUFFIX_PROBABILITY) {
       candidate = mechanisms.appendNumberSuffix(candidate, pool, rng);

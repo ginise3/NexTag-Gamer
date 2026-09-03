@@ -3,7 +3,8 @@ import type { LengthPreference, ParameterOption } from "../../domain/types";
 import type { Lang, Translations } from "../../i18n/translations";
 import type { useCustomNickname } from "../hooks/useCustomNickname";
 import { AdditionalWordsInput } from "./AdditionalWordsInput";
-import { ClassicOptionsSection } from "./ClassicOptionsSection";
+import { GenerateButton } from "./GenerateButton";
+import { NicknameCountField } from "./NicknameCountField";
 
 interface SingleSelectProps {
   label: string;
@@ -34,6 +35,7 @@ interface CustomControlsProps {
   mode: ReturnType<typeof useCustomNickname>;
   t: Translations;
   lang: Lang;
+  onGenerate: () => void;
 }
 
 /**
@@ -41,7 +43,7 @@ interface CustomControlsProps {
  * Genre → Setting → Role → Play Style → Nick Style → Length → Additional
  * Words. Ни один параметр не обязателен (§7, база §23).
  */
-export function CustomControls({ mode, t, lang }: CustomControlsProps) {
+export function CustomControls({ mode, t, lang, onGenerate }: CustomControlsProps) {
   const c = t.custom;
 
   return (
@@ -118,12 +120,9 @@ export function CustomControls({ mode, t, lang }: CustomControlsProps) {
         {t.common.addNumbers}
       </label>
 
-      <ClassicOptionsSection
-        t={t}
-        value={mode.classic.state}
-        onChange={mode.classic.setState}
-        baseWordIssues={mode.classic.baseWordIssues}
-      />
+      <NicknameCountField value={mode.count} onChange={mode.setCount} t={t} />
+
+      <GenerateButton hasResults={mode.results.length > 0} onGenerate={onGenerate} t={t} />
     </div>
   );
 }

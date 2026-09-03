@@ -41,8 +41,8 @@ function AppShell() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(true);
   const [isMobileViewport, setIsMobileViewport] = useState(isMobileViewportNow);
 
-  const quick = useQuickNickname(t, lang);
-  const custom = useCustomNickname(t, lang);
+  const quick = useQuickNickname(lang);
+  const custom = useCustomNickname(lang);
   const invisible = useInvisibleNickname();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps -- намеренно один раз за сессию (Task.md §32 app_open)
@@ -88,10 +88,18 @@ function AppShell() {
 
   function selectMode(next: Mode) {
     setMode(next);
-    // Раньше здесь панель закрывалась сразу после выбора режима (по
-    // аналогии с нав-меню) — но пользователю после переключения режима
-    // ещё нужно настроить параметры в той же панели, а не сразу видеть
-    // результат. Закрывать должен явно (гамбургер/оверлей/Escape).
+    // Переключение режима НЕ закрывает панель — после него пользователю
+    // ещё нужно настроить параметры в той же панели. Закрывать должен
+    // явно (гамбургер/оверлей/Escape) либо нажатием "Сгенерировать" ниже.
+  }
+
+  // Кнопка "Сгенерировать" теперь внизу панели настроек в сайдбаре — после
+  // неё пользователь должен увидеть результат в основной области, поэтому
+  // на мобильных сама генерация закрывает панель (в отличие от переключения
+  // вкладок режима, которое панель не закрывает).
+  function generateAndClose(generate: () => void) {
+    generate();
+    setMobileMenuOpen(false);
   }
 
   return (
@@ -143,9 +151,15 @@ function AppShell() {
           </button>
         </div>
 
-        {mode === "quick" && <QuickControls mode={quick} t={t} lang={lang} />}
-        {mode === "custom" && <CustomControls mode={custom} t={t} lang={lang} />}
-        {mode === "invisible" && <InvisibleControls mode={invisible} t={t} />}
+        {mode === "quick" && (
+          <QuickControls mode={quick} t={t} lang={lang} onGenerate={() => generateAndClose(quick.handleGenerate)} />
+        )}
+        {mode === "custom" && (
+          <CustomControls mode={custom} t={t} lang={lang} onGenerate={() => generateAndClose(custom.handleGenerate)} />
+        )}
+        {mode === "invisible" && (
+          <InvisibleControls mode={invisible} t={t} onGenerate={() => generateAndClose(invisible.handleGenerate)} />
+        )}
       </aside>
 
       <main className="main-content">
@@ -157,7 +171,6 @@ function AppShell() {
             results={quick.results}
             copiedValue={quick.copiedValue}
             onCopy={quick.copy}
-            onGenerate={quick.handleGenerate}
             t={t}
             emptyHint={t.quick.hint}
             batchBadges={quick.badges}
@@ -168,7 +181,6 @@ function AppShell() {
             results={custom.results}
             copiedValue={custom.copiedValue}
             onCopy={custom.copy}
-            onGenerate={custom.handleGenerate}
             t={t}
             emptyHint={t.custom.emptyHint}
             batchBadges={custom.badges}
@@ -179,7 +191,6 @@ function AppShell() {
             results={invisible.results}
             copiedValue={invisible.copiedValue}
             onCopy={invisible.copy}
-            onGenerate={invisible.handleGenerate}
             t={t}
           />
         )}

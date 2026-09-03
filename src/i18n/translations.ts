@@ -48,7 +48,7 @@ export interface Translations {
     addNumbers: string;
     lengthLabel: string;
     lengthOptions: { any: string; short: string; medium: string; long: string };
-    leetBadge: string;
+    countLabel: string;
     emptyStateTitle: string;
     examplesLabel: string;
   };
@@ -90,16 +90,6 @@ export interface Translations {
     tooLong: (raw: string, max: number) => string;
     tooManyItems: (max: number) => string;
   };
-  classicOptions: {
-    heading: string;
-    hint: string;
-    baseWordLabel: string;
-    baseWordPlaceholder: string;
-    stylePresetLabel: string;
-    stylePresetOptions: { random: string; gamer: string; cute: string };
-    leetLabel: string;
-    countLabel: string;
-  };
 }
 
 export const TRANSLATIONS: Record<Lang, Translations> = {
@@ -124,7 +114,7 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       addNumbers: "Add numbers",
       lengthLabel: "Length",
       lengthOptions: { any: "Any length", short: "Short", medium: "Medium", long: "Long" },
-      leetBadge: "Leet",
+      countLabel: "Number of nicknames",
       emptyStateTitle: "No nicknames yet",
       examplesLabel: "Examples",
     },
@@ -182,16 +172,6 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       tooLong: (raw, max) => `"${raw}" is too long (max ${max} characters).`,
       tooManyItems: (max) => `Only the first ${max} words/phrases were used — the rest were ignored.`,
     },
-    classicOptions: {
-      heading: "Classic style options",
-      hint: "Optional extras carried over from the earlier generator.",
-      baseWordLabel: "Base word or name",
-      baseWordPlaceholder: "e.g. Alex",
-      stylePresetLabel: "Style preset",
-      stylePresetOptions: { random: "Random", gamer: "Gamer", cute: "Cute" },
-      leetLabel: "Leet-speak (a → 4, o → 0, etc.)",
-      countLabel: "Number of nicknames",
-    },
   },
   ru: {
     appTagline: "Генератор игровых ников",
@@ -214,7 +194,7 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
       addNumbers: "Добавлять числа",
       lengthLabel: "Длина",
       lengthOptions: { any: "Любая длина", short: "Короткая", medium: "Средняя", long: "Длинная" },
-      leetBadge: "Leet",
+      countLabel: "Количество ников",
       emptyStateTitle: "Пока нет ни одного ника",
       examplesLabel: "Примеры",
     },
@@ -271,16 +251,6 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
         `«${raw}» содержит недопустимые символы (только буквы, цифры, пробел, "-", "'").`,
       tooLong: (raw, max) => `«${raw}» слишком длинное (максимум ${max} символов).`,
       tooManyItems: (max) => `Учтены только первые ${max} слов/фраз — остальные проигнорированы.`,
-    },
-    classicOptions: {
-      heading: "Классические опции стиля",
-      hint: "Необязательные допопции, перенесённые из прежнего генератора.",
-      baseWordLabel: "Слово или имя для основы",
-      baseWordPlaceholder: "например, Alex",
-      stylePresetLabel: "Пресет стиля",
-      stylePresetOptions: { random: "Случайный", gamer: "Геймерский", cute: "Милый" },
-      leetLabel: "Leet-speak (а → 4, о → 0 и т.д.)",
-      countLabel: "Количество ников",
     },
   },
 };

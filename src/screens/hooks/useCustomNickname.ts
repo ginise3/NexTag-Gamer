@@ -9,13 +9,13 @@ import {
 } from "../../analytics";
 import { normalizeCustomWordsInput } from "../../domain/normalizer";
 import { createEmptySemanticProfile, type LengthPreference } from "../../domain/types";
-import type { Lang, Translations } from "../../i18n/translations";
+import type { Lang } from "../../i18n/translations";
 import { computeBatchBadges } from "./batchBadges";
-import { useClassicOptions } from "./useClassicOptions";
+import { DEFAULT_NICKNAME_COUNT } from "./nicknameCount";
 import { useNicknameSession } from "./useNicknameSession";
 
 /** Состояние + генерация для режима Custom Nickname (Task.md §6, §39). */
-export function useCustomNickname(t: Translations, lang: Lang) {
+export function useCustomNickname(lang: Lang) {
   const [genres, setGenres] = useState<Set<string>>(new Set());
   const [setting, setSettingState] = useState("");
   const [role, setRoleState] = useState("");
@@ -24,15 +24,12 @@ export function useCustomNickname(t: Translations, lang: Lang) {
   const [length, setLength] = useState<LengthPreference | "">("");
   const [additionalWordsRaw, setAdditionalWordsRaw] = useState("");
   const [useNumbers, setUseNumbers] = useState(false);
+  const [count, setCount] = useState(DEFAULT_NICKNAME_COUNT);
 
   const additionalWords = useMemo(() => normalizeCustomWordsInput(additionalWordsRaw), [additionalWordsRaw]);
-  const classic = useClassicOptions();
   const session = useNicknameSession();
 
-  const badges = useMemo(
-    () => computeBatchBadges(nickStyle, classic.state, t, lang),
-    [nickStyle, classic.state, t, lang],
-  );
+  const badges = useMemo(() => computeBatchBadges(nickStyle, lang), [nickStyle, lang]);
 
   function toggleGenre(id: string) {
     setGenres((prev) => {
@@ -69,7 +66,6 @@ export function useCustomNickname(t: Translations, lang: Lang) {
 
   function handleGenerate() {
     const isRegenerate = session.results.length > 0;
-    const customWords = classic.mergeBaseWordInto(additionalWords.customWords);
     const profile = {
       ...createEmptySemanticProfile(),
       genre: [...genres],
@@ -78,19 +74,14 @@ export function useCustomNickname(t: Translations, lang: Lang) {
       playStyle: playStyle || undefined,
       nickStyle: nickStyle || undefined,
       length: length || undefined,
-      customWords,
+      customWords: additionalWords.customWords,
     };
 
     trackGenerationStarted("custom");
     if (isRegenerate) trackRegenerateClicked("custom");
-    trackCustomWordsUsed(customWords.length);
+    trackCustomWordsUsed(additionalWords.customWords.length);
 
-    const next = session.generate(profile, {
-      useNumbers,
-      count: classic.state.count,
-      extraFlavorWords: classic.extraFlavorWords,
-      useLeetSpeak: classic.state.useLeetSpeak,
-    });
+    const next = session.generate(profile, { useNumbers, count });
     trackGenerationCompleted("custom", next.length);
   }
 
@@ -117,7 +108,8 @@ export function useCustomNickname(t: Translations, lang: Lang) {
     additionalWordsIssues: additionalWords.issues,
     useNumbers,
     setUseNumbers,
-    classic,
+    count,
+    setCount,
     badges,
     handleGenerate,
     results: session.results,

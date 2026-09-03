@@ -2,16 +2,18 @@ import { NICK_STYLES } from "../../domain/data";
 import type { LengthPreference } from "../../domain/types";
 import type { Lang, Translations } from "../../i18n/translations";
 import type { useQuickNickname } from "../hooks/useQuickNickname";
-import { ClassicOptionsSection } from "./ClassicOptionsSection";
+import { GenerateButton } from "./GenerateButton";
+import { NicknameCountField } from "./NicknameCountField";
 
 interface QuickControlsProps {
   mode: ReturnType<typeof useQuickNickname>;
   t: Translations;
   lang: Lang;
+  onGenerate: () => void;
 }
 
 /** Настройки Quick Nickname в сайдбаре (Task.md §5.2 — все необязательные). */
-export function QuickControls({ mode, t, lang }: QuickControlsProps) {
+export function QuickControls({ mode, t, lang, onGenerate }: QuickControlsProps) {
   return (
     <div>
       <h2>{t.quick.heading}</h2>
@@ -44,12 +46,9 @@ export function QuickControls({ mode, t, lang }: QuickControlsProps) {
         {t.common.addNumbers}
       </label>
 
-      <ClassicOptionsSection
-        t={t}
-        value={mode.classic.state}
-        onChange={mode.classic.setState}
-        baseWordIssues={mode.classic.baseWordIssues}
-      />
+      <NicknameCountField value={mode.count} onChange={mode.setCount} t={t} />
+
+      <GenerateButton hasResults={mode.results.length > 0} onGenerate={onGenerate} t={t} />
     </div>
   );
 }

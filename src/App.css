@@ -268,6 +268,14 @@ button:disabled {
   border-color: var(--accent-hover);
 }
 
+/* Кнопка Generate/Generate more — низ панели настроек в сайдбаре. */
+.generate-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 14px;
+}
+
 /* ---------- Notices ---------- */
 
 .notice-warning {
