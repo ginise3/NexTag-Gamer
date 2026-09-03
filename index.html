@@ -1,9 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" translate="no">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Блокирует автоперевод Chrome/Google Translate на мобильных: без
+         этого браузер может решить перевести страницу (например, из-за
+         статичного lang="en" при русском языке устройства) и продолжать
+         переводить обратно на русский текст, который React уже отрисовал
+         по-английски после выбора языка в самом приложении — снаружи это
+         выглядит как "язык не переключается", хотя приложение работает
+         верно. См. также document.documentElement.lang, синхронизируемый
+         в LanguageContext.tsx. -->
+    <meta name="google" content="notranslate" />
     <title>NexTag Gamer</title>
   </head>
   <body>
