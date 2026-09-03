@@ -485,6 +485,10 @@ button:disabled {
     width: min(300px, 85vw);
     max-height: none;
     z-index: 50;
+    /* Гамбургер зафиксирован поверх (z-index: 60) в верхнем левом углу —
+       без этого отступа он перекрывал бы первое поле сайдбара (выбор
+       языка), и тапы по нему могли попадать по кнопке, а не по select. */
+    padding-top: 64px;
     transform: translateX(-100%);
     transition: transform 0.25s ease;
     border-right: 1px solid var(--border);
